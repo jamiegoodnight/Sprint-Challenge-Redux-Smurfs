@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import './App.css';
 import { fetchSmurfsStart } from '../actions/index'
+import { smurfSmurf } from '../actions/index'
 
 /*
  to wire this component up you're going to need a few things.
@@ -21,12 +22,60 @@ class App extends Component {
   componentDidMount(){
     this.props.fetchSmurfsStart()
   }
+  handleChange = e => {
+    e.preventDefault()
+    this.setState({
+      smurf: {
+        ...this.state.smurf,
+        [e.target.name]: e.target.value,
+      }
+    })
+  }
+  smurfSmurf = e => {
+    this.props.smurfSmurf(this.state.smurf)
+    this.setState({
+      smurf: {
+        name: '',
+        age: '',
+        height: '',
+      }
+    })
+  }
   render() {
     return (
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
-        <div>
-        </div>
+          {this.props.smurfs.map((x, i) => (
+            <div key={x.name}>
+              <h4>{x.name}</h4>
+              <p>{x.age}</p>
+              <p>{x.height}</p>
+            </div>
+          ))}
+            <form onSubmit={this.smurfSmurf}>
+              <input 
+              type="string"
+              name="name"
+              value={this.state.smurf.name}
+              placeholder="ex, 'Papa Smurf'"
+              onChange={this.handleChange}
+              />
+              <input 
+              type="number"
+              name="age"
+              value={this.state.smurf.age}
+              placeholder="ex, '100'"
+              onChange={this.handleChange}
+              />
+              <input 
+              type="string"
+              name="height"
+              value={this.state.smurf.height}
+              placeholder="ex, '8cm'"
+              onChange={this.handleChange}
+              />
+              <button>Smurf a Smurf</button>
+            </form>
       </div>
     );
   }
@@ -39,6 +88,9 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    fetchSmurfsStart
+    fetchSmurfsStart,
+    smurfSmurf,
   }
 )(App);
+
+

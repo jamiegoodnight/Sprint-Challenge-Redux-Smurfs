@@ -25,7 +25,9 @@
 import {
   FETCH_SMURFS_START,
   FETCH_SMURFS_SUCCESS,
-  FETCH_SMURFS_FAILURE
+  FETCH_SMURFS_FAILURE,
+  SMURF_SMURF,
+  SMURF_FAILURE,
 } from '../actions/index'
 
 const initialState = {
@@ -50,6 +52,18 @@ export const reducer = (state=initialState, action) => {
       error: null,
     }
     case FETCH_SMURFS_FAILURE: 
+    return {
+      ...state,
+      error: action.payload,
+    }
+    case SMURF_SMURF: 
+    return {
+      ...state,
+      smurfs: [...state.smurfs,...action.payload],
+      loading: false,
+      error: null,
+    }
+    case SMURF_FAILURE: 
     return {
       ...state,
       error: action.payload,
